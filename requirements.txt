@@ -1,0 +1,7 @@
+# Planning and measurement only. Install in a separate Python 3.12 environment.
+# usd-exchange supplies pxr; do not add usd-core to this environment.
+numpy==2.5.3
+scipy==1.16.1
+warp-lang==1.17.0
+usd-exchange==2.3.0
+filelock>=3.16,<4
