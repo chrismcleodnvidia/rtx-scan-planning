@@ -30,34 +30,25 @@ def command(args,log):
 
 def scene_path(folder):
  folder=Path(folder);standalone=folder/'model/building.usdc'
+ if not standalone.exists():raise FileNotFoundError('Native CAD USD required: '+str(standalone))
  scan_scene=folder/'model/scan-scene.usda'
- if scan_scene.exists():return scan_scene
- return standalone if standalone.exists() else folder/'model/geometry.usdc'
+ return scan_scene if scan_scene.exists() else standalone
 
 def bim_metadata(folder):
- """USD is authority for new assets; JSON is only a rebuildable transport cache."""
+ """Native CAD USD is authority; JSON is a rebuildable transport cache."""
  import subprocess
  folder=Path(folder)
- scene=scene_path(folder)
  record=read(folder/'project.json')
- if record.get('metadata_backend')=='nvidia-cad-native':
-  signature=digest(scene)+'-'+digest(folder/'model/building.usdc')[:12]+'-'+digest(ROOT/'native_ifc.py')[:12]+'-'+record['source_revision']
-  cache=ROOT/'.cache/bim-metadata'/(signature+'.json')
-  if cache.exists():return read(cache)
-  try:
-   from native_ifc import metadata
-   result=metadata(scene,record['source_revision'])
-  except ModuleNotFoundError as e:
-   if e.name!='pxr':raise
-   result=json.loads(subprocess.check_output([str(PYTHON),str(ROOT/'native_ifc.py'),str(scene),'--source-revision',record['source_revision']],cwd=ROOT,text=True))
-  write(cache,result);return result
- if scene.name!='building.usdc':return read(Path(folder)/'model/ifc-metadata.json')
- signature=digest(scene)+'-'+digest(ROOT/'ifc_usd/read.py')[:12];cache=ROOT/'.cache/bim-metadata'/(signature+'.json')
+ if record.get('metadata_backend')!='nvidia-cad-native':
+  raise ValueError('Unsupported metadata backend; import native NVIDIA CAD Converter USD')
+ scene=scene_path(folder)
+ signature=digest(scene)+'-'+digest(folder/'model/building.usdc')[:12]+'-'+digest(ROOT/'native_ifc.py')[:12]+'-'+record['source_revision']
+ cache=ROOT/'.cache/bim-metadata'/(signature+'.json')
  if cache.exists():return read(cache)
  try:
-  from ifc_usd.read import metadata
-  result=metadata(scene)
+  from native_ifc import metadata
+  result=metadata(scene,record['source_revision'])
  except ModuleNotFoundError as e:
   if e.name!='pxr':raise
-  result=json.loads(subprocess.check_output([str(PYTHON),'-m','ifc_usd.read',str(scene)],cwd=ROOT,text=True))
+  result=json.loads(subprocess.check_output([str(PYTHON),str(ROOT/'native_ifc.py'),str(scene),'--source-revision',record['source_revision']],cwd=ROOT,text=True))
  write(cache,result);return result

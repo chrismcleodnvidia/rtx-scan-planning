@@ -30,5 +30,4 @@ def prepare(folder):
  for name,n,seed in [('planning',20000,20261103),('audit',100000,20261104)]:
   rng=np.random.default_rng(seed);chosen=rng.choice(len(f),n,p=area/area.sum());uv=rng.random((n,2));u=np.sqrt(uv[:,0]);t=tri[chosen];p=(1-u[:,None])*t[:,0]+(u*(1-uv[:,1]))[:,None]*t[:,1]+(u*uv[:,1])[:,None]*t[:,2];np.savez_compressed(geo/(name+'.npz'),points=p.astype('float32'),normals=norm[chosen],label_index=fl[chosen],sample_area_m2=float(area.sum()/n))
  p=read(folder/'project.json')
- if (folder/'model/conversion-audit.json').exists():p['conversion_warnings']=read(folder/'model/conversion-audit.json').get('curve_only_products',[])
  p.update(status='ready',source_revision=metadata['source_ifc_sha256'],bounds_m=[v.min(0).tolist(),v.max(0).tolist()],elements=len(labels),triangles=len(f),world_offset_m=metadata.get('world_offset_m',[0,0,0]));write(folder/'project.json',p);print('GEOMETRY_READY',len(labels),len(f),flush=True)

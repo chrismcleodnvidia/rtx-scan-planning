@@ -1,6 +1,6 @@
 # RTX scan planning
 
-An agent skill and Python workflow for planning, capturing and improving **IFC-linked synthetic LiDAR scans** with NVIDIA Isaac Sim. Version **0.7.0.4**.
+An agent skill and Python workflow for planning, capturing and improving **IFC-linked synthetic LiDAR scans** with NVIDIA Isaac Sim. Version **0.7.0.5**.
 
 The NVIDIA CAD Converter produces the USD and its native IFC metadata. This workflow chooses scanner positions, captures actual RTX sensor returns, measures coverage, and adds useful viewpoints. It preserves the converter's USD and links points to existing IFC identities.
 
@@ -132,7 +132,7 @@ Each run contains native NPZ returns, PLY point clouds, `labels.json`, source/pr
 - Geometric agreement is measured against the supplied USD, not a calibrated real scanner or proof of IFC conversion fidelity.
 - The tested baseline is opaque and zero-noise. Glass, transmission and manufacturer-specific response are not validated.
 - The density predictor currently uses stationary, unrotated uniform angular grids. Other rigs need a corresponding predictor or measured candidate captures.
-- Prepared datasets from the retired enrichment converter and their `ifc_usd` reader are outside this package's supported native-CAD input path.
+- The supported input is native NVIDIA CAD Converter USD. Metadata is read directly from that USD; capture JSON tables are derived convenience outputs, not a separate BIM authority. Other exporter schemas require an explicit identity reader.
 
 Only reusable source and agent instructions are included. Install NVIDIA dependencies under their respective terms. No vendor SDK binaries, datasets, captured scans, credentials or internal project records are included.
 
@@ -150,7 +150,7 @@ Only reusable source and agent instructions are included. Install NVIDIA depende
 
 ## Reusable visualization and inspection
 
-The workbench UI is not required. Optional additions in 0.7.0.4:
+The workbench UI is not required. Optional visualization and inspection components:
 
 | Component | Input → output | Integration guide |
 |---|---|---|

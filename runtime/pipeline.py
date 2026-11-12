@@ -54,8 +54,7 @@ def scan(key,profile='dense',resume=None,publish=True):
  done=(run/'capture.json').exists() and read(run/'capture.json').get('validation_status')=='passed_capture_checks'
  if not done:
   cmd=[ISAAC,ROOT/'capture.py','--scene',scene_path(folder),'--stations',run/'stations.json','--output-dir',run,'--vertical-channels',cfg['channels'],'--report-rate',cfg['report_rate'],'--near-range',cfg['near'],'--far-range',cfg['far'],'--elevation-min',cfg['elevation'][0],'--elevation-max',cfg['elevation'][1],'--material-mode',cfg['material_mode'],'--capture-seconds','.2','--min-packets','12']
-  if metadata.get('metadata_backend')=='nvidia-cad-native':cmd+=['--native-ifc','--source-revision',metadata['source_ifc_sha256']]
-  elif scene_path(folder).name!='building.usdc':cmd+=['--metadata',folder/'model/ifc-metadata.json']
+  cmd+=['--native-ifc','--source-revision',metadata['source_ifc_sha256']]
   if resume:cmd+=['--resume']
   write(run/('resume-command.json' if resume else 'command.json'),dict(command=[str(x) for x in cmd],script_sha256=digest(ROOT/'capture.py'),plan_sha256=digest(run/'stations.json')));command(cmd,run/'native.log')
  if not (run/'capture.json').exists() or read(run/'capture.json').get('validation_status')!='passed_capture_checks':raise RuntimeError('RTX capture incomplete; see native.log. Resume this run with --resume '+run.name)

@@ -54,7 +54,7 @@ def package_run(folder,run,measure=True,publish=True):
   np.savez_compressed(run/'coverage-audit.npz',nearest=nearest,visible=visible);write(run/'metrics.json',metrics);np.c_[s['points'],np.where(~visible,0,np.where(nearest<=.02,2,1))].astype('<f4').tofile(view/'coverage.bin');summary['metrics']=metrics
  elif (run/'evaluation.json').exists():
   old=read(run/'evaluation.json');c=old['coverage'][-1];summary['metrics']=dict(surface_error=old['surface_error'],visible_area_m2=c['visible_reference_area_m2'],thresholds=[dict(tolerance_m=x['tolerance_m'],visible_fraction=x['visible_surface_fraction']) for x in c['thresholds']],ifc_linked_fraction=old['ifc_linked_fraction'],accuracy_scope='Prior validated run; geometry agreement only',objects=[])
- summary['download']=dict(labels='labels.json',metadata='ifc-metadata.json',format=('Binary PLY: x/y/z/intensity/ifc_label + label-index table; properties in building.usdc, optional derived metadata JSON' if meta.get('authority')=='USD' else 'Binary PLY: x/y/z/intensity/ifc_label + labels and legacy IFC metadata sidecar'));write(view/'run.json',summary)
+ summary['download']=dict(labels='labels.json',metadata='ifc-metadata.json',format='Binary PLY: x/y/z/intensity/ifc_label + label-index table; native properties in building.usdc; ifc-metadata.json is a derived convenience copy');write(view/'run.json',summary)
  if publish:
   project=read(folder/'project.json');project['runs']=[x for x in project.get('runs',[]) if x['id']!=run.name]+[dict(id=run.name,title=summary['title'],points=summary['total_points'])];write(folder/'project.json',project)
  if measure:

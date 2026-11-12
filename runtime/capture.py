@@ -8,8 +8,7 @@ import argparse,hashlib,json,time
 
 parser=argparse.ArgumentParser()
 parser.add_argument('--scene',type=Path,required=True)
-parser.add_argument('--metadata',type=Path,help='Legacy only; omitted for self-contained building USD')
-parser.add_argument('--native-ifc',action='store_true',help='Read native NVIDIA CAD Converter IFC properties directly from USD')
+parser.add_argument('--native-ifc',action='store_true',help='Compatibility flag; native CAD USD metadata is always used')
 parser.add_argument('--source-revision',help='Original IFC hash for capture provenance; not a metadata input')
 parser.add_argument('--material-mode',choices=['opaque','classified'],default='opaque')
 parser.add_argument('--resume',action='store_true')
@@ -48,15 +47,7 @@ try:
     source=args.scene.resolve()
     open_stage(str(source));stage=omni.usd.get_context().get_stage()
     from native_ifc import metadata as native_metadata,owner_index,owner as resolve_owner,hide_nonphysical_geometry
-    if args.native_ifc:
-        metadata=native_metadata(source,args.source_revision)
-    elif stage.GetDefaultPrim().GetAttribute('bim:mappingVersion'):
-        from ifc_usd.read import metadata as usd_metadata
-        metadata=usd_metadata(source)
-    elif args.metadata:
-        metadata=json.loads(args.metadata.read_text())
-    else:
-        raise ValueError('Legacy USD requires --metadata; new self-contained USD does not')
+    metadata=native_metadata(source,args.source_revision)
     stage.SetEditTarget(stage.GetSessionLayer())
     owners=owner_index(metadata)
     box=UsdGeom.BBoxCache(Usd.TimeCode.Default(),['default','render','proxy']).ComputeWorldBound(stage.GetDefaultPrim()).ComputeAlignedRange()

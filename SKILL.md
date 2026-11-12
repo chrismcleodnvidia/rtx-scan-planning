@@ -2,7 +2,7 @@
 name: rtx-scan-planning
 description: Plan and improve native RTX LiDAR coverage of IFC-derived USD buildings using Isaac Sim. Use for scanner placement, coverage-gap investigation, incremental captures, IFC-linked point-cloud output, scan previews and full-capture inspection images.
 metadata:
-  prototype_version: "0.7.0.4"
+  prototype_version: "0.7.0.5"
 ---
 
 # RTX scan planning
