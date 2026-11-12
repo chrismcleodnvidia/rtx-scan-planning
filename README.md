@@ -1,6 +1,6 @@
 # RTX scan planning
 
-An agent skill and Python workflow for planning, capturing and improving **IFC-linked synthetic LiDAR scans** with NVIDIA Isaac Sim. Version **0.7.0.3**.
+An agent skill and Python workflow for planning, capturing and improving **IFC-linked synthetic LiDAR scans** with NVIDIA Isaac Sim. Version **0.7.0.4**.
 
 The NVIDIA CAD Converter produces the USD and its native IFC metadata. This workflow chooses scanner positions, captures actual RTX sensor returns, measures coverage, and adds useful viewpoints. It preserves the converter's USD and links points to existing IFC identities.
 
@@ -147,3 +147,15 @@ Only reusable source and agent instructions are included. Install NVIDIA depende
 | No IFC identities | Confirm the standard conversion used `--convert-metadata`; arbitrary USD or a different metadata schema needs a compatible reader. |
 | Slow first startup | Check the Isaac log for shader/extension setup. Keep caches and environments on local disk. |
 | Capture interrupted | Retain the run and resume it; completed station checksums, source and profile are verified. |
+
+## Reusable visualization and inspection
+
+The workbench UI is not required. Optional additions in 0.7.0.4:
+
+| Component | Input → output | Integration guide |
+|---|---|---|
+| Bounded preview | Full capture PLYs → point/label arrays and explicit sampling counts | [Visualization](references/visualization.md) |
+| All-return offline views | Full capture + cameras → PNGs and processing record | [Visualization](references/visualization.md) |
+| IFC-aware inspection | Native CAD USD + picked prim/scan label → IFC owner; IFC owner → renderable meshes | [Application integration](references/application-integration.md) |
+
+For the renderer and viewer foundation use the [official NVIDIA Realtime Viewer skill](https://github.com/NVIDIA/skills/blob/main/skills/omniverse-realtime-viewer/SKILL.md). The [Omniverse Libraries Playground](https://github.com/NVIDIA-Omniverse/omniverse-labs/tree/main/samples/ov-library-playground-sample) is the specific walkthrough reference. The [Blender 0.2 integration](https://github.com/NVIDIA-Omniverse/omniverse-labs/releases/tag/ovrtx-blender-example-0.2) shows an existing host application's external rendering-worker architecture. These are upstream references, not repackaged implementations or a claim of tested customer-application integration.

@@ -1,8 +1,8 @@
 ---
 name: rtx-scan-planning
-description: Plan and improve native RTX LiDAR coverage of IFC-derived USD buildings using Isaac Sim. Use for scanner placement, coverage-gap investigation, incremental captures and IFC-linked point-cloud output.
+description: Plan and improve native RTX LiDAR coverage of IFC-derived USD buildings using Isaac Sim. Use for scanner placement, coverage-gap investigation, incremental captures, IFC-linked point-cloud output, scan previews and full-capture inspection images.
 metadata:
-  prototype_version: "0.7.0.3"
+  prototype_version: "0.7.0.4"
 ---
 
 # RTX scan planning
@@ -39,6 +39,12 @@ For a diagnosis-only request, inspect existing evidence without starting capture
 Combine only compatible source revisions and sensor configurations. Preserve coordinates and provenance; never fill holes with sampled mesh points, move returns to fit geometry, or report a prediction as a capture. Measured outputs remain useful even when coverage is below target; retain them while improving the plan.
 
 Deliver the completed point-cloud files, label table, coverage and error measurements, position plan, and a concise before/after result. Keep the original data and audit available. State that a bounded viewer preview is downsampled; display-point size changes are not changes to scan accuracy.
+
+## Visualization and application handoff
+
+For previews or offline evidence from an existing capture, read [visualization.md](references/visualization.md). Use the reusable tools without starting another capture. Report displayed versus recorded points and keep surface-coverage audits distinct from scan returns.
+
+For walkthrough/inspection integration into a customer application, read [application-integration.md](references/application-integration.md). Start with NVIDIA's official Realtime Viewer skill for rendering and the playground specifically for its walking example. Consult Blender 0.2 for an existing-host integration pattern. Reuse upstream functionality; add only IFC ownership/selection and scan-data contracts. Do not imply that a browser reference establishes customer-host embedding support.
 
 ## Current prototype limits
 

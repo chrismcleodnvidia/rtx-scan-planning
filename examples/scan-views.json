@@ -1,0 +1,5 @@
+[
+  {"name":"overview","eye":[30,-30,22],"target":[0,0,8],"up":[0,0,1],"vertical_span_m":32},
+  {"name":"reverse","eye":[-30,30,22],"target":[0,0,8],"up":[0,0,1],"vertical_span_m":32},
+  {"name":"cutaway","eye":[0,-0.1,35],"target":[0,0,0],"up":[0,1,0],"vertical_span_m":32,"clip_z_max":3}
+]

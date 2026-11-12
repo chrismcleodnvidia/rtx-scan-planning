@@ -1,4 +1,4 @@
 interface:
   display_name: "RTX Scan Planning"
-  short_description: "Plan, capture and refine IFC-linked RTX LiDAR scans"
+  short_description: "Capture, inspect and visualize IFC-linked RTX scans"
   default_prompt: "Use $rtx-scan-planning to improve this building's measured scan coverage while preserving its IFC identities."

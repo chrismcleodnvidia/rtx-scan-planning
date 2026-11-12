@@ -1,0 +1,4 @@
+# Optional preview/offline rendering environment; no Isaac/OVRTX install needed here.
+numpy==2.5.3
+warp-lang==1.17.0
+Pillow>=10,<13
